@@ -1,10 +1,13 @@
 import axios from 'axios'
 
-
+const API_OBJECT = {
+    createNewAccount: {method: 'post', url: '/create/newAccount'},
+    login: {method: 'post', url: '/login'}
+}
 
 const axiosInstance = axios.create({
-    baseURL: API_URL,
-    timeout: 10000,  
+    baseURL: 'http://localhost:6969',
+    timeout: 10000
 
 })
 
@@ -54,7 +57,7 @@ axiosInstance.interceptors.response.use(
 
 const API = {}
 
-for(const [key,value] of Object.entries(sample_url)){
+for(const [key,value] of Object.entries(API_OBJECT)){
     API[key] = (body) => {
      
         return axiosInstance({ 
