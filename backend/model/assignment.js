@@ -23,9 +23,13 @@ const AssignmentSchema = mongoose.Schema({
     shift: {
         type: String,
         required: true
+    },
+    email: {
+        type: String,
+        required: true
     }
     
 })
 
-const AssignmentModel = mongoose.Model('Assignment', AssignmentSchema)
+const AssignmentModel = mongoose.model('Assignment', AssignmentSchema)
 module.exports = AssignmentModel

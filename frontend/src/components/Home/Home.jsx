@@ -29,6 +29,7 @@ const Home = ()=>{
         query.append('shift', e)
         query.append('category', account.category)
         query.append('name', account.name)
+        query.append('email', account.email)
 
 
         

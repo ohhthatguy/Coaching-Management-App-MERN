@@ -37,6 +37,7 @@ const Login = ()=>{
             setLogInData({...logInData, [e.target.name]: e.target.value})
     }
     // console.log(logInData)
+    
 
     const handleLogIn = async()=>{
 

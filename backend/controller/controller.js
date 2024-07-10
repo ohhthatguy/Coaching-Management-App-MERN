@@ -1,4 +1,7 @@
 const AccountModel = require('../model/account')
+const AssignmentModel = require("../model/assignment")
+const Grid = require('gridfs-stream')
+const mongoose = require('mongoose')
 
 
 
@@ -41,5 +44,83 @@ const checkLogIn = async(req,res)=>{
     }
 }
 
+const saveAssignmentImage = (req,res)=>{
 
-module.exports = {createNewAccount, checkLogIn}
+    if(!req.files){
+        return res.status(404).json({msg: "no files were found to upload"})
+    }
+
+    let endPoints = [];
+    req.files.map((e)=>{
+        endPoints = [...endPoints,`http://localhost:6969/file/${e.filename}`]
+    })
+
+    return res.status(200).json(endPoints)
+
+}
+
+
+//////////////////////////////////////////////
+let gfs, gridfsbucket
+const conn = mongoose.connection
+
+conn.once('open',()=>{
+    gridfsbucket = new mongoose.mongo.GridFSBucket(conn.db,{
+        bucketName: 'image'
+    })
+    gfs = Grid(conn.db, mongoose.mongo)
+    gfs.collection('image')
+})
+
+const getUploadedImage = async(req,res)=>{
+    const filename = req.params.filename
+
+    try{
+        const file = await gfs.files.findOne({filename: filename})
+        const readStream = gridfsbucket.openDownloadStream(file._id);
+        readStream.pipe(res);
+
+    }catch(err){
+        return res.status(500).json({msg: `photo's been uploaded but fetching  is showing error.`, err})
+
+    }
+
+
+}
+//////////////////////////////////////////////
+
+
+const createNewAssignment = async(req,res)=>{
+
+    try{
+
+        const data = new AssignmentModel(req.body)
+        const response = await data.save()
+
+        return res.status(200).json({msg: 'data save sucesfully'})
+
+        }catch(err){
+            return res.status(500).json({msg: 'data did not save sucesfully. ERROR: ', err})
+
+        }
+
+}
+
+const getAllAssignment = async(req,res)=>{
+    console.log(req.query.email)
+    try{
+
+        const data = await AssignmentModel.find({email: req.query.email})
+        if(!data){
+            return res.status(404).json({msg: "There are no assignments"})
+        }
+
+        return res.status(200).json(data)
+
+    }catch(err){
+        return res.status(500).json({msg: "some error occured while fetching aassignments. ERROR: ", err})
+    }
+}
+
+
+module.exports = {createNewAccount, checkLogIn, saveAssignmentImage,getUploadedImage, createNewAssignment, getAllAssignment}

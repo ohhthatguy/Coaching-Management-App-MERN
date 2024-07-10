@@ -2,8 +2,13 @@ import axios from 'axios'
 
 const API_OBJECT = {
     createNewAccount: {method: 'post', url: '/create/newAccount'},
-    login: {method: 'post', url: '/login'}
+    login: {method: 'post', url: '/login'},
+    saveImages: {method: 'post', url:'/save/image'},
+    saveCreatedAssignment: {method: 'post', url:'/save/Assignment'},
+    getAllAssignment: {method: 'get', url: '/class', query: true}
+    
 }
+
 
 const axiosInstance = axios.create({
     baseURL: 'http://localhost:6969',
@@ -11,9 +16,33 @@ const axiosInstance = axios.create({
 
 })
 
+const getType =(value,body)=>{
+    if(value.params){
+        return {params: body}
+    }else if(value.query){
+        if(typeof body == 'object'){
+            return {query: body._id}
+        }else{
+            return {query: body}
+        }
+    }else{
+        return {}
+    }
+
+}
+
 
 axiosInstance.interceptors.request.use(
     function (config){ 
+        
+        if(config.TYPE.params){
+            config.params = config.TYPE.params
+            console.log(config.params)
+        }else if(config.TYPE.query){
+            config.url = config.url + '/' + config.TYPE.query
+            console.log(config.url)
+        }
+
         return config
     },
     function (err){  //this function activates when request( from frontend) fails
@@ -64,6 +93,7 @@ for(const [key,value] of Object.entries(API_OBJECT)){
             method: value.method,
             url: value.url,
             data: body,
+            TYPE: getType(value,body)
         })
     }
 }

@@ -1,11 +1,14 @@
-
+import {useState, useEffect, useContext} from 'react'
 import Header from "../Header/Header"
 import { Box,Paper, FormLabel, Grid } from "@mui/material"
 import { useLocation, useNavigate } from "react-router-dom"
 import {Create} from '@mui/icons-material';
+import { API } from '../../services/Api';
+import { DataContext } from '../../context/DataProvider';
 
 
 const Class = ()=>{
+    const {assignmentListUpdated, account} = useContext(DataContext)
 
     const navigate = useNavigate()
     const { search } = useLocation();
@@ -13,6 +16,8 @@ const Class = ()=>{
     const shift = queryParams.get('shift');
     const category = queryParams.get('category');
     const name = queryParams.get('name');
+    const email = queryParams.get('email');
+
 
     const navigateToAssignment = ()=>{
         const query = new URLSearchParams()
@@ -21,13 +26,41 @@ const Class = ()=>{
         query.append('shift', shift)
         query.append('name', name)
 
-
-        
         const queryString = query.toString()
         navigate(`/create/assignment?${queryString}`)
     }
 
-  
+    const [assignments , setAssignments] = useState([]);
+
+    useEffect(()=>{
+        
+        const getAllAssignment = async()=>{
+
+            // console.log(account.email)
+
+            try{
+
+                let response = await API.getAllAssignment();
+                if(!response.data){
+                    console.log("there is no data returned by server")
+                }else{
+                    console.log(response.data)
+                    setAssignments([...response.data])
+                }
+
+            }catch(err){
+                console.log("SOME ERORR HAPPEEND IN FONTEND WHILE HANDLING ASSIGNMENT FETCHING. ERROR: ",err)
+
+            }
+        }
+
+        getAllAssignment()
+
+
+    },[assignmentListUpdated])
+
+
+  console.log(assignments)
 
 
     return (<>
