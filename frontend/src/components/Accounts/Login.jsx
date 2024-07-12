@@ -48,7 +48,7 @@ const Login = ()=>{
             if(!response.isSuccess){
                 console.log("some error came across. RESPONSE: ", response)
             }else{
-                console.log("login successfull")
+                // console.log("login successfull")
                 setAccount(response.data)
                 navigate('/home')
 

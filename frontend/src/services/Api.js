@@ -5,7 +5,8 @@ const API_OBJECT = {
     login: {method: 'post', url: '/login'},
     saveImages: {method: 'post', url:'/save/image'},
     saveCreatedAssignment: {method: 'post', url:'/save/Assignment'},
-    getAllAssignment: {method: 'get', url: '/class', query: true}
+    getAllAssignment: {method: 'get', url: '/class', params: true},
+    getAssignmentById: {method: 'get', url: '/class/assignment', params:true}
     
 }
 
@@ -18,13 +19,19 @@ const axiosInstance = axios.create({
 
 const getType =(value,body)=>{
     if(value.params){
+        // console.log(value)
+        // console.log("IM here")
         return {params: body}
     }else if(value.query){
-        if(typeof body == 'object'){
+    
+          if(typeof body == 'object'){
+            console.log(body)
+          
             return {query: body._id}
-        }else{
-            return {query: body}
         }
+        return {query: body}
+
+   
     }else{
         return {}
     }
@@ -34,10 +41,12 @@ const getType =(value,body)=>{
 
 axiosInstance.interceptors.request.use(
     function (config){ 
+
+        // console.log(config)
         
         if(config.TYPE.params){
             config.params = config.TYPE.params
-            console.log(config.params)
+            // console.log(config.params)
         }else if(config.TYPE.query){
             config.url = config.url + '/' + config.TYPE.query
             console.log(config.url)
@@ -88,12 +97,13 @@ const API = {}
 
 for(const [key,value] of Object.entries(API_OBJECT)){
     API[key] = (body) => {
-     
+    //  console.log(body)
         return axiosInstance({ 
             method: value.method,
             url: value.url,
             data: body,
             TYPE: getType(value,body)
+           
         })
     }
 }

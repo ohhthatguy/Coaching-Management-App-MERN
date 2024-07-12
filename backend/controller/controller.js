@@ -107,10 +107,12 @@ const createNewAssignment = async(req,res)=>{
 }
 
 const getAllAssignment = async(req,res)=>{
-    console.log(req.query.email)
+    // console.log("inside funciton get all assignment")
+    // console.log(req.query)
+
     try{
 
-        const data = await AssignmentModel.find({email: req.query.email})
+        const data = await AssignmentModel.find(req.query)
         if(!data){
             return res.status(404).json({msg: "There are no assignments"})
         }
@@ -122,5 +124,27 @@ const getAllAssignment = async(req,res)=>{
     }
 }
 
+const getAssignmentById = async(req,res)=>{
 
-module.exports = {createNewAccount, checkLogIn, saveAssignmentImage,getUploadedImage, createNewAssignment, getAllAssignment}
+    // console.log(req.query)
+    // console.log("im in assignment id func.")
+
+    try{
+
+        let response = await AssignmentModel.find(req.query)
+        if(!response){
+            return res.status(404).json({msg: 'no assignemnt were found'})
+        }
+
+        return res.status(200).json(response)
+
+
+    }catch(err){
+        return res.status(500).json({msg: 'ERROR IN BACKEND IN FETCHING DATA. ERROR: ', err})
+
+    }
+
+}
+
+
+module.exports = {createNewAccount, checkLogIn, saveAssignmentImage,getUploadedImage, createNewAssignment, getAllAssignment, getAssignmentById}

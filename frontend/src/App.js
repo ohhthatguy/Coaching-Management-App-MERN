@@ -4,6 +4,9 @@ import Signup from './components/Accounts/Signup'
 import Home from './components/Home/Home'
 import Class from './components/Class/Class'
 import Assignment from './components/Create/Assignment'
+import IndividualAssignment from './components/Class/IndividualAssignment'
+import Fullimage from './components/Class/Fullimage'
+import UpdateAssignment from './components/Class/Update/UpdateAssignment'
 
 
 
@@ -17,8 +20,14 @@ const App = () => {
 
      <Route path="/home" element={<Home />} />
 
-    <Route path='/class' element={<Class />} />
-    <Route path='/create/assignment' element={<Assignment />} />
+      <Route path='/class' element={<Class />} />
+      <Route path='/create/assignment' element={<Assignment />} />
+
+      <Route path='/class/assignment' element={ <IndividualAssignment />} />
+
+      <Route path='/class/assignment/fullimage' element={<Fullimage />} />
+
+      <Route path='/update/assignment' element={<UpdateAssignment />} />
 
     </Routes>
 

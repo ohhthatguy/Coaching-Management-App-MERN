@@ -10,7 +10,7 @@ const teacherAssignUpload = require('../Middleware/teacherAssignUpload')
 
 
 //import from controller
-const {createNewAccount,saveAssignmentImage, checkLogIn, getUploadedImage, createNewAssignment, getAllAssignment} = require('../controller/controller')
+const {createNewAccount,saveAssignmentImage, checkLogIn, getUploadedImage, createNewAssignment, getAllAssignment, getAssignmentById} = require('../controller/controller')
 
 //create a new account
 router.post('/create/newAccount', createNewAccount)
@@ -29,6 +29,9 @@ router.post('/save/Assignment', createNewAssignment)
 
 //get all assignmnets
 router.get('/class', getAllAssignment);
+
+//get assignemnts by id
+router.get('/class/assignment', getAssignmentById)
 
 
 module.exports = router

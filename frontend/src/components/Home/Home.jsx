@@ -20,7 +20,7 @@ const StyledCard = styled(Card)`
 const Home = ()=>{
     const navigate = useNavigate()
     const {account} = useContext(DataContext)
-    console.log(account.date)
+    // console.log(account.date)
 
     const handleNavigation=(e)=>{
         const query = new URLSearchParams()

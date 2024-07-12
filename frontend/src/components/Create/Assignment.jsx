@@ -57,7 +57,7 @@ const Assignment = ()=>{
 
                     let response = await API.saveImages(data)
                     console.log(response.data);
-                    setAssignmentData({...assignmentData, image: [,...response.data]})
+                    setAssignmentData({...assignmentData, image: [...response.data]})
                     setDisplayImage(response.data)
 
 
