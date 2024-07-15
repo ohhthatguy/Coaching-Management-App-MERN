@@ -2,7 +2,7 @@ import { useState,useEffect,useContext } from "react";
 import Header from "../Header/Header"
 import {Box, Grid, TextField,TextareaAutosize, Button } from "@mui/material"
 import {AttachFile} from '@mui/icons-material';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {API} from "../../services/Api"
 import {Cancel} from '@mui/icons-material';
 import { DataContext } from "../../context/DataProvider";
@@ -11,6 +11,7 @@ import { DataContext } from "../../context/DataProvider";
 const Assignment = ()=>{
 
     const {setAssignmentListUpdated, account} = useContext(DataContext)
+    const navigate = useNavigate()
 
     const { search } = useLocation();
     const queryParams = new URLSearchParams(search);
@@ -93,6 +94,7 @@ const Assignment = ()=>{
                 if(response.isSuccess){
                     console.log("Data is saved")
                     setAssignmentListUpdated(prev=> !prev)
+                    navigate(`/class?shift=${shift}&category=Teacher&name=${name}&email=${account.email}`)
                 }else{
                     console.log("Data is not saved")
 
@@ -196,7 +198,7 @@ const Assignment = ()=>{
 
                     </label>
                    
-                    <Button  variant="contained" onClick={()=>handleClick()} >Create</Button>
+                    <Button  variant="contained" onClick={()=>handleClick()}  >Create</Button>
                 </Grid>
 
 

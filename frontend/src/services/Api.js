@@ -6,7 +6,10 @@ const API_OBJECT = {
     saveImages: {method: 'post', url:'/save/image'},
     saveCreatedAssignment: {method: 'post', url:'/save/Assignment'},
     getAllAssignment: {method: 'get', url: '/class', params: true},
-    getAssignmentById: {method: 'get', url: '/class/assignment', params:true}
+    getAssignmentById: {method: 'get', url: '/class/assignment', params:true},
+    updateAssignment: {method: 'put', url: '/class/assignment/update'},
+    deleteAssignment: {method: 'delete', url: '/class/assignment/delete'},
+    saveStudentAssignmentSubmission: {method: 'post', url: '/save/student/assignment'}
     
 }
 
@@ -24,12 +27,12 @@ const getType =(value,body)=>{
         return {params: body}
     }else if(value.query){
     
-          if(typeof body == 'object'){
-            console.log(body)
+        //   if(typeof body == 'object'){
+        //     // console.log(body)
           
-            return {query: body._id}
-        }
-        return {query: body}
+        //     return {query: body._id}
+        // }
+        return body
 
    
     }else{
@@ -42,14 +45,14 @@ const getType =(value,body)=>{
 axiosInstance.interceptors.request.use(
     function (config){ 
 
-        // console.log(config)
+        // console.log(config.data)
         
         if(config.TYPE.params){
             config.params = config.TYPE.params
             // console.log(config.params)
         }else if(config.TYPE.query){
-            config.url = config.url + '/' + config.TYPE.query
-            console.log(config.url)
+            // config.url = config.url + '/' + config.TYPE.query
+            // console.log(config.url)
         }
 
         return config

@@ -1,13 +1,19 @@
 import { useContext } from "react"
 import Header from "../Header/Header"
-import { Box, Card, CardHeader, CardContent, Paper, styled, Grid, FormLabel } from "@mui/material"
+import { Box,Typography, Card, CardHeader, CardContent, Paper, styled, Grid, FormLabel } from "@mui/material"
 import { DataContext } from "../../context/DataProvider"
 import { useNavigate } from "react-router-dom"
 
 
 const StyledCard = styled(Card)`
     border: 1px solid darkgreen;
-     margin-top: 1.5rem;
+    //  margin-top: 1.25rem;
+     height: 15rem;
+    //  text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+     width: 30%;
       background-color: #FEAE6F;
       &:hover {
         cursor: pointer;
@@ -41,26 +47,26 @@ const Home = ()=>{
 
     return (<>
     <Header />
-        <Grid container style={{marginTop: "5rem", border: "1px solid blue"}} rowSpacing={2}>
+        <Grid container direction="column" style={{marginTop: "5rem", border: "1px solid blue"}} rowSpacing={2}>
 
             <Grid style={{border: "1px solid black"}} item lg={12} md={12} sd={12} xs={12}>
                 <Paper >
-                    hello ${account.name}
+                    <Typography variant="h5"> hello {account.name} </Typography>
                 </Paper>
             </Grid>
+
             <FormLabel>Your Classes: </FormLabel>
 
-            <Grid item style={{border: "1px solid red"}} xs={12} sm={10}>
+            {/* style={{border: "10px solid red"}} */}
+            <Grid container sx={{padding: '3rem'}} justifyContent="space-between" direction="row" alignItems="center"  xs={12} >
                 
 
                 {
                     account.shift.map((e,index)=>(
 
                         <StyledCard onClick={()=> handleNavigation(e)} key={index}>
-                            <CardHeader title='hello'/>
-                            <CardContent>
-                            { `hello world, ${e}, ${index} `}
-                            </CardContent>
+                            <CardHeader title={e}/>
+                            
                         </StyledCard>
                     ))
                    
@@ -69,12 +75,12 @@ const Home = ()=>{
 
             </Grid>
 
-
+            <FormLabel>Your Teachers: </FormLabel>
 {
                 (account.category == 'Teacher') ? (
 
                 <Grid item style={{border: "1px solid red"}} xs={12} sm={10}>
-                     <FormLabel>Your Teachers: </FormLabel>
+                    
                     teacher area
                     </Grid>
                       

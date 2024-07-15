@@ -7,6 +7,7 @@ import Assignment from './components/Create/Assignment'
 import IndividualAssignment from './components/Class/IndividualAssignment'
 import Fullimage from './components/Class/Fullimage'
 import UpdateAssignment from './components/Class/Update/UpdateAssignment'
+import Submit from './components/Class/Submit/Submit'
 
 
 
@@ -28,6 +29,8 @@ const App = () => {
       <Route path='/class/assignment/fullimage' element={<Fullimage />} />
 
       <Route path='/update/assignment' element={<UpdateAssignment />} />
+
+      <Route path='/assignment/submit' element={<Submit />} />
 
     </Routes>
 

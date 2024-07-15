@@ -1,5 +1,6 @@
 const AccountModel = require('../model/account')
 const AssignmentModel = require("../model/assignment")
+const studentSubmissionModel  = require("../model/stuSubmision")
 const Grid = require('gridfs-stream')
 const mongoose = require('mongoose')
 
@@ -106,10 +107,26 @@ const createNewAssignment = async(req,res)=>{
 
 }
 
+//for teacher
 const getAllAssignment = async(req,res)=>{
     // console.log("inside funciton get all assignment")
     // console.log(req.query)
 
+    try{
+
+        const data = await AssignmentModel.find(req.query)
+        if(!data){
+            return res.status(404).json({msg: "There are no assignments"})
+        }
+
+        return res.status(200).json(data)
+
+    }catch(err){
+        return res.status(500).json({msg: "some error occured while fetching aassignments. ERROR: ", err})
+    }
+}
+//for student
+const getAllAssignmentStu = async(req,res)=>{
     try{
 
         const data = await AssignmentModel.find(req.query)
@@ -146,5 +163,41 @@ const getAssignmentById = async(req,res)=>{
 
 }
 
+const updateAssignment = async(req,res)=>{
+    // console.log(req.body)
 
-module.exports = {createNewAccount, checkLogIn, saveAssignmentImage,getUploadedImage, createNewAssignment, getAllAssignment, getAssignmentById}
+    try{
+        await AssignmentModel.findByIdAndUpdate(req.body._id, {
+            $set: req.body
+        })
+        return res.status(200).json({msg: "assignment successfully updated!"})
+    }catch(err){
+        return res.status(500).json({err: err})
+    }
+}
+
+const deleteAssignment = async(req,res)=>{
+    // console.log(req.body)
+
+    try{
+        await AssignmentModel.deleteOne({_id: req.body._id})
+        return res.status(200).json({msg: "assignment successfully deleted!"})
+    }catch(err){
+        return res.status(500).json({err: err})
+    }a
+}
+
+const saveStudentAssignmentSubmission = async(req,res)=>{
+    try{
+        let response = new studentSubmissionModel(req.body)
+        const data = await response.save() 
+        return res.status(200).json({msg: 'data save sucesfully'})
+
+    }catch(err){
+        return res.status(500).json({msg: 'data did not save sucesfully. ERROR: ', err})
+
+    }
+}
+
+
+module.exports = {createNewAccount, saveStudentAssignmentSubmission,getAllAssignmentStu,updateAssignment, checkLogIn, saveAssignmentImage,getUploadedImage, createNewAssignment, getAllAssignment, getAssignmentById, deleteAssignment}

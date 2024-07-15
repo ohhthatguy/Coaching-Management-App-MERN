@@ -14,7 +14,8 @@ const AssignmentSchema = mongoose.Schema({
        
     }],
     date: {
-        type: Date
+        type: Date,
+        required: true
     },
     teacher: {
         type: String,

@@ -1,8 +1,8 @@
 import {useState, useEffect, useContext} from 'react'
 import Header from "../Header/Header"
-import { Box,Card, CardHeader,CardContent, Grid } from "@mui/material"
+import { Box,Card, CardActions, Button , CardHeader,CardContent, Grid, Typography } from "@mui/material"
 import { useLocation, useNavigate } from "react-router-dom"
-import {Create, AddCircle} from '@mui/icons-material';
+import {Create, AddCircle, Delete} from '@mui/icons-material';
 
 import { API } from '../../services/Api';
 import { DataContext } from '../../context/DataProvider';
@@ -10,7 +10,7 @@ import Image from './Image';
 
 
 const Class = ()=>{
-    const {assignmentListUpdated, account} = useContext(DataContext)
+    const {assignmentListUpdated,setAssignmentListUpdated, account} = useContext(DataContext)
 
     const navigate = useNavigate()
 
@@ -47,13 +47,27 @@ const Class = ()=>{
             // console.log(email)
 
             try{
+                // let response = await API.getAllAssignment({email: email});
 
-                let response = await API.getAllAssignment({email: email});
-                if(!response.data){
-                    console.log("there is no data returned by server")
-                }else{
-                    // console.log(response.data)
-                    setAssignments([...response.data])
+                if(category === 'Teacher'){
+
+                    let response = await API.getAllAssignment({email: email, shift: shift});
+                        if(!response.data){
+                            console.log("there is no data returned by server")
+                        }else{
+                            // console.log(response.data)
+                            setAssignments([...response.data])
+                        }
+                }else if(category === 'Student'){
+                    console.log("im here")
+                    let response = await API.getAllAssignment({shift: shift});
+                        if(!response.data){
+                            console.log("there is no data returned by server")
+                        }else{
+                            // console.log(response.data)
+                            setAssignments([...response.data])
+                        }
+
                 }
 
             }catch(err){
@@ -68,13 +82,36 @@ const Class = ()=>{
     },[assignmentListUpdated])
 
 
-//   console.log(assignments)
+  console.log(assignments)
 
+const handleSubmissionStu = (id)=>{
+    console.log("sbumit submission")
+    if(assignments){
+        navigate(`/assignment/submit?shift=${shift}&category=${category}&name=${name}&email=${email}&id=${id}`)
 
+    }
+}
 
     const handleEdit =(e)=>{
         console.log("handle edit", e)
-        navigate(`/update/assignment?id=${e._id}`)
+        // navigate(`/update/assignment?id=${e._id}`)
+        navigate(`/update/assignment?id=${e._id}&shift=${shift}&category=${category}&name=${name}&email=${email}`)
+    }
+
+    const handleDelete= async(e)=>{
+        console.log(e)
+        try{
+            let response = await API.deleteAssignment(e)
+            if(!response.isSuccess){
+                console.log("some problem in frontend while delteing assgnemtn")
+            }else{
+                console.log("succesfully delted")
+                setAssignmentListUpdated(prev=> !prev)
+            }
+
+        }catch(err){
+            console.log("some problem in delting. ERROR: ", err)
+        }
     }
 
     return (<>
@@ -86,7 +123,18 @@ const Class = ()=>{
                     {(category === 'Teacher') && 
                         <Box style={{ border: "1px solid red", display: "flex", justifyContent: "space-around", alignItems: "self"}}>
                                 {`Good ${shift}`}
-                            <AddCircle onClick={()=> navigateToAssignment()} fontSize="medium"/>
+                                {
+                                    category === 'Teacher' && 
+                                    <AddCircle onClick={()=> navigateToAssignment()} sx={{'&:hover':{
+                                        color: 'green',
+                                        transition: '0.4s',
+                                        translate: 'scale(1.02)',
+                                        cursor: 'pointer'
+                                    },
+                                transition: '0.4s'}} fontSize='large'/> 
+
+                                }
+                          
                         </Box>
                     }
          
@@ -119,16 +167,43 @@ const Class = ()=>{
                             
                             <Card sx={{height: 'fit-content', position: 'relative'}}>
                                 <Box sx={{position: 'absolute', right: 0}}>
+                                    {
+                                        (category === 'Teacher') &&(<Box>
+                                    
                                     <Create onClick={()=> handleEdit(e)} sx={{'&:hover':{
                                         color: 'green'
                                     }}} fontSize='large'/>
-                                </Box>
 
-                            <CardHeader onClick={()=> handleAssignmentCard(e)} sx={{'&:hover':{
+                                    <Delete onClick={()=> handleDelete(e)} sx={{'&:hover':{
+                                        color: 'red'
+                                    }}} fontSize='large'/>
+
+                                </Box>)}
+                                    
+                                </Box>
+<Box onClick={()=> handleAssignmentCard(e)} sx={{display: 'flex', justifyContent: 'space-between','&:hover':{
                                         backgroundColor: 'grey',
                                         transition: '0.4s'
                                     },
-                                    transition: '0.4s'}}  title={e.title} subheader={e.date} />
+                                    transition: '0.4s',}}>
+                                        {
+                                            category === 'Student' ?
+                                            <CardHeader title={e.title} /> : 
+                                            category === 'Teacher' && 
+                                            <CardHeader title={e.title} subheader={e.date} />
+                                        }
+                         
+                                 
+                                 {
+
+                                 (category === 'Student') &&
+                                    <Box>
+                                        {`${e.teacher} // ${e.shift}`} <br /> 
+                                        <Typography variant='caption'>{`${e.date}`}</Typography>
+                                    </Box>
+
+                                 }
+</Box>
 
                             
                             <CardContent >
@@ -141,8 +216,16 @@ const Class = ()=>{
                             {                                                                                       
                                 (e.image.length >0 ) && <Image handleAssignmentCard={handleAssignmentCard} e={e} />
                             }
-                          
 
+                            {
+                                (category === 'Student' ) &&  
+                                
+                            <CardActions>
+                                <Button onClick={()=>handleSubmissionStu(e._id)}>Submit</Button>
+                            </CardActions>
+                            }
+                          
+                           
 
                         </Card>
                         </Grid>
