@@ -199,5 +199,36 @@ const saveStudentAssignmentSubmission = async(req,res)=>{
     }
 }
 
+const getStuTeachList = async(req,res)=>{
+    // const shift = req.body;
+    const account = req.query
+    // console.log(account.account)
 
-module.exports = {createNewAccount, saveStudentAssignmentSubmission,getAllAssignmentStu,updateAssignment, checkLogIn, saveAssignmentImage,getUploadedImage, createNewAssignment, getAllAssignment, getAssignmentById, deleteAssignment}
+
+    try{
+        if(account.account.category === 'Student'){
+           
+                let response = await AccountModel.find( { shift: { $in: account.account.shift },category: 'Teacher' })
+                if(!response){
+                    return res.status(404).json({msg: "therr is no data in this shift"})
+                }
+                return res.status(200).json(response)
+
+
+        }else if(account.account.category === 'Teacher'){
+            let response = await AccountModel.find( { shift: { $in: account.account.shift },category: 'Student' })
+            if(!response){
+                return res.status(404).json({msg: "therr is no data in this shift"})
+            }
+            return res.status(200).json(response)
+        }
+    }catch(err){
+        return res.status(500).json({err: err})
+        
+    }
+   
+
+}
+
+
+module.exports = {createNewAccount, getStuTeachList, saveStudentAssignmentSubmission,getAllAssignmentStu,updateAssignment, checkLogIn, saveAssignmentImage,getUploadedImage, createNewAssignment, getAllAssignment, getAssignmentById, deleteAssignment}

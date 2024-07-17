@@ -12,11 +12,11 @@ const DataProvider = ({children})=>{
         email: '',
         password: '',
         date: '',
-        id: ''
+        _id: ''
     }
     const[account, setAccount] = useState(initial)
     const[assignmentListUpdated, setAssignmentListUpdated] = useState(false)
-    // console.log(account)
+    console.log(account)
 
     return (
         <DataContext.Provider value={{setAccount, account, assignmentListUpdated, setAssignmentListUpdated}}>

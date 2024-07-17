@@ -1,8 +1,9 @@
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import Header from "../Header/Header"
-import { Box,Typography, Card, CardHeader, CardContent, Paper, styled, Grid, FormLabel } from "@mui/material"
+import { Button,Box,Typography, Card, CardHeader, CardContent, Paper, styled, Grid, FormLabel } from "@mui/material"
 import { DataContext } from "../../context/DataProvider"
 import { useNavigate } from "react-router-dom"
+import { API } from "../../services/Api"
 
 
 const StyledCard = styled(Card)`
@@ -25,8 +26,9 @@ const StyledCard = styled(Card)`
 
 const Home = ()=>{
     const navigate = useNavigate()
+    const [entityList, setEntityList] = useState()
     const {account} = useContext(DataContext)
-    // console.log(account.date)
+    console.log(account)
 
     const handleNavigation=(e)=>{
         const query = new URLSearchParams()
@@ -42,8 +44,39 @@ const Home = ()=>{
         const queryString = query.toString()
         navigate(`/class?${queryString}`)
     }
-    
-    // console.log(account)
+    console.log(entityList)
+    if(entityList){
+        entityList.map((e)=>{
+            console.log(e._id)
+        })
+        
+    }
+   
+    // useEffect(()=>{
+
+
+
+    // },[account._id])
+
+    const getListOfTeacherOrStudent = async()=>{
+        try{
+           console.log(account)
+                let response = await API.getStuTeachList({account: account})
+                if(!response.isSuccess){
+                    console.log("some error on frontend side in getting list")
+                }else{
+                    console.log("getting student  / teacher list is successfulll. DATA: ", response.data)
+                    setEntityList(response.data)
+                }
+
+            
+
+
+        }catch(err){
+            console.log("ERROR: ",err)
+        }
+
+    }
 
     return (<>
     <Header />
@@ -52,6 +85,7 @@ const Home = ()=>{
             <Grid style={{border: "1px solid black"}} item lg={12} md={12} sd={12} xs={12}>
                 <Paper >
                     <Typography variant="h5"> hello {account.name} </Typography>
+                    <Button onClick={()=>getListOfTeacherOrStudent()}>CALL API TEST</Button>
                 </Paper>
             </Grid>
 
@@ -75,23 +109,29 @@ const Home = ()=>{
 
             </Grid>
 
-            <FormLabel>Your Teachers: </FormLabel>
-{
-                (account.category == 'Teacher') ? (
+            <FormLabel>Your {account.category}: </FormLabel>
 
-                <Grid item style={{border: "1px solid red"}} xs={12} sm={10}>
+                            
                     
-                    teacher area
-                    </Grid>
-                      
-                ) : 
 
-                <Grid item style={{border: "1px solid red"}} xs={12} sm={10}>
-                    <FormLabel>Your Students: </FormLabel>
-                    student area
-                    </Grid>
-                
-            }
+                            <Grid item style={{border: "1px solid red"}} xs={12} sm={10}>
+                                {
+                                        (entityList )&& 
+                                        entityList.map((e)=>(
+                                            <Box>
+                                                {e._id}
+                                            </Box>
+                                        ))   
+
+                                }
+                                          
+                           
+                            </Grid>
+                        
+                    
+                                   
+                      
+              
             
 
             

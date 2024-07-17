@@ -9,7 +9,8 @@ const API_OBJECT = {
     getAssignmentById: {method: 'get', url: '/class/assignment', params:true},
     updateAssignment: {method: 'put', url: '/class/assignment/update'},
     deleteAssignment: {method: 'delete', url: '/class/assignment/delete'},
-    saveStudentAssignmentSubmission: {method: 'post', url: '/save/student/assignment'}
+    saveStudentAssignmentSubmission: {method: 'post', url: '/save/student/assignment'},
+    getStuTeachList: {method: 'get', url:'/list/category', params:true}
     
 }
 
@@ -38,6 +39,8 @@ const getType =(value,body)=>{
     }else{
         return {}
     }
+
+    
 
 }
 
