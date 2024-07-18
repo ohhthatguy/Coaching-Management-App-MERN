@@ -4,6 +4,8 @@ import { Button,Box,Typography, Card, CardHeader, CardContent, Paper, styled, Gr
 import { DataContext } from "../../context/DataProvider"
 import { useNavigate } from "react-router-dom"
 import { API } from "../../services/Api"
+import EntityList from "./EntityList/EntityList"
+
 
 
 const StyledCard = styled(Card)`
@@ -114,29 +116,16 @@ const Home = ()=>{
                             
                     
 
-                            <Grid item style={{border: "1px solid red"}} xs={12} sm={10}>
+                            <Grid item style={{border: "10px solid red", display: "flex", justifyContent: "space-around"}} xs={12} sm={10}>
+                              
                                 {
-                                        (entityList )&& 
-                                        entityList.map((e)=>(
-                                            <Box>
-                                                {e._id}
-                                            </Box>
-                                        ))   
+                                    (entityList )&& <EntityList entity={entityList} />
+                                
 
                                 }
-                                          
-                           
+
                             </Grid>
-                        
-                    
-                                   
-                      
-              
-            
 
-            
-
-            
         </Grid>
     </>)
 }
