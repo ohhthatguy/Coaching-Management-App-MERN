@@ -10,7 +10,8 @@ const API_OBJECT = {
     updateAssignment: {method: 'put', url: '/class/assignment/update'},
     deleteAssignment: {method: 'delete', url: '/class/assignment/delete'},
     saveStudentAssignmentSubmission: {method: 'post', url: '/save/student/assignment'},
-    getStuTeachList: {method: 'get', url:'/list/category', params:true}
+    getStuTeachList: {method: 'get', url:'/list/category', params:true},
+    getStudentAssignmentSubmission: {method: 'get', url: '/get/student/assignment'}
     
 }
 

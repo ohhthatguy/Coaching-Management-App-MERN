@@ -110,8 +110,13 @@ const Home = ()=>{
                
 
             </Grid>
+                {
+                    account.category === 'Teacher' ? 
+                    <FormLabel>Your Student: </FormLabel> :
+            <FormLabel>Your Teacher: </FormLabel>
 
-            <FormLabel>Your {account.category}: </FormLabel>
+
+                }
 
                             
                     

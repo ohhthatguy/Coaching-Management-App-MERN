@@ -14,7 +14,7 @@ const IndividualAssignment = ()=>{
 
     const navigate = useNavigate();
 
-    // console.log(id)
+    console.log(assignment)
 
     useEffect(()=>{
 
@@ -24,7 +24,7 @@ const IndividualAssignment = ()=>{
 
 
                 try{
-                    let response = await API.getAssignmentById({_id: id})
+                    let response = await API.getAssignmentById({_id: id}) //the id is assignment id not assignment creater's or submitter id
                    
                     if(response.isSuccess){
                         // console.log(response.data)

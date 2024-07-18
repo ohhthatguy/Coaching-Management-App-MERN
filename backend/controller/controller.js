@@ -112,9 +112,14 @@ const getAllAssignment = async(req,res)=>{
     // console.log("inside funciton get all assignment")
     // console.log(req.query)
 
+    req.query.shift = req.query.shift.split(',')
+    // console.log(req.query)
+
     try{
 
-        const data = await AssignmentModel.find(req.query)
+     
+            const data = await AssignmentModel.find(req.query)
+        
         if(!data){
             return res.status(404).json({msg: "There are no assignments"})
         }
@@ -199,6 +204,8 @@ const saveStudentAssignmentSubmission = async(req,res)=>{
     }
 }
 
+
+
 const getStuTeachList = async(req,res)=>{
     // const shift = req.body;
     const account = req.query
@@ -230,5 +237,20 @@ const getStuTeachList = async(req,res)=>{
 
 }
 
+const getStudentAssignmentSubmission = async(req,res)=>{
+    try{
 
-module.exports = {createNewAccount, getStuTeachList, saveStudentAssignmentSubmission,getAllAssignmentStu,updateAssignment, checkLogIn, saveAssignmentImage,getUploadedImage, createNewAssignment, getAllAssignment, getAssignmentById, deleteAssignment}
+        const data = await studentSubmissionModel.find(req.query)
+        if(!data){
+            return res.status(404).json({msg: "There are no assignments submissions"})
+        }
+
+        return res.status(200).json(data)
+
+    }catch(err){
+        return res.status(500).json({msg: "some error occured while fetching aassignments submission. ERROR: ", err})
+    }
+}
+
+
+module.exports = {createNewAccount,getStudentAssignmentSubmission, getStuTeachList, saveStudentAssignmentSubmission,getAllAssignmentStu,updateAssignment, checkLogIn, saveAssignmentImage,getUploadedImage, createNewAssignment, getAllAssignment, getAssignmentById, deleteAssignment}

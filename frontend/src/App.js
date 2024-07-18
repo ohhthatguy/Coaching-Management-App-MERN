@@ -8,6 +8,7 @@ import IndividualAssignment from './components/Class/IndividualAssignment'
 import Fullimage from './components/Class/Fullimage'
 import UpdateAssignment from './components/Class/Update/UpdateAssignment'
 import Submit from './components/Class/Submit/Submit'
+import Profile from './components/Profile/Profile'
 
 
 
@@ -31,6 +32,8 @@ const App = () => {
       <Route path='/update/assignment' element={<UpdateAssignment />} />
 
       <Route path='/assignment/submit' element={<Submit />} />
+
+      <Route path='/profile' element={<Profile />} />
 
     </Routes>
 

@@ -9,8 +9,11 @@ const EntityList = ({entity}) =>{
 
      const navigate = useNavigate()
      
-    const handleClick =()=>{
-        console.log('clicked')
+    const handleClick =(e)=>{
+        console.log(e)
+            navigate(`/profile?name=${e.name}&email=${e.email}&id=${e._id}&category=${e.category}&shift=${e.shift}`)
+
+      
     }
 
 
@@ -21,7 +24,7 @@ const EntityList = ({entity}) =>{
             entity.map((e,index)=>(
                 <Box key={index} sx={{display: "flex"}}>
 
-                    <Card onClick={()=>handleClick()} sx={{border: '5px solid black', width: "18vw", textAlign: "center", '&:hover':{
+                    <Card onClick={()=>handleClick(e)} sx={{border: '5px solid black', width: "18vw", textAlign: "center", '&:hover':{
                         cursor: 'pointer',
                         transform: 'scale(1.03)',
                         transition: '0.4s'
