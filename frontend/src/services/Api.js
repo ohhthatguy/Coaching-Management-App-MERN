@@ -11,7 +11,7 @@ const API_OBJECT = {
     deleteAssignment: {method: 'delete', url: '/class/assignment/delete'},
     saveStudentAssignmentSubmission: {method: 'post', url: '/save/student/assignment'},
     getStuTeachList: {method: 'get', url:'/list/category', params:true},
-    getStudentAssignmentSubmission: {method: 'get', url: '/get/student/assignment'}
+    getStudentAssignmentSubmission: {method: 'get', url: '/get/student/assignment', params:true}
     
 }
 

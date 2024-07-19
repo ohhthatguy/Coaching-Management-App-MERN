@@ -112,7 +112,7 @@ const getAllAssignment = async(req,res)=>{
     // console.log("inside funciton get all assignment")
     // console.log(req.query)
 
-    req.query.shift = req.query.shift.split(',')
+    // req.query.shift = req.query.shift.split(',')
     // console.log(req.query)
 
     try{

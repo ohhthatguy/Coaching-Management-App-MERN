@@ -1,23 +1,16 @@
 import { useEffect, useState, useContext } from "react";
 import Header from "../Header/Header"
-import { Box, CardHeader, Card, Grid, Paper, CardContent, Typography } from "@mui/material"
-import { useLocation } from "react-router-dom";
+import { Box, CardHeader, Card, Grid,Typography, Paper, CardContent } from "@mui/material"
+
 import { API } from "../../services/Api";
 import { DataContext } from "../../context/DataProvider";
 
-const Profile = ()=>{
+const AccountProfile = ()=>{
 
     const {assignmentListUpdated, account} = useContext(DataContext)
 
     console.log(account)
-    const { search } = useLocation();
-    const queryParams = new URLSearchParams(search);
-    const email = queryParams.get('email');
-    const name = queryParams.get('name');
-    // const id = queryParams.get('id');
-    const shift = queryParams.get('shift')
-    const category = queryParams.get('category');
-
+   
     const [assignments, setAssignments] = useState()
  
 
@@ -33,10 +26,10 @@ const Profile = ()=>{
             try{
              
 
-                if(category === 'Teacher'){
-                    let commonShift = shift.split(',').filter(element => account.shift.includes(element));
+                if(account.category === 'Teacher'){
+                  
 
-                    let response = await API.getAllAssignment({email: email, shift: commonShift});
+                    let response = await API.getAllAssignment({email: account.email, shift: account.shift});
                         if(!response.data){
                             console.log("there is no data returned by server")
                         }else{
@@ -46,12 +39,9 @@ const Profile = ()=>{
                             
 
                         }
-                }else if(category === 'Student'){
-                    //find submission done by student
-                    // console.log(email)
-                    let commonShift = shift.split(',').filter(element => account.shift.includes(element));
-                    // console.log(commonShift)
-                    let response = await API.getStudentAssignmentSubmission({email: email, shift: commonShift});
+                }else if(account.category === 'Student'){
+                  
+                    let response = await API.getStudentAssignmentSubmission({email: account.email, shift: account.shift});
                         if(!response.data){
                             console.log("there is no data returned by server")
                         }else{
@@ -78,18 +68,37 @@ const Profile = ()=>{
     <Header />
         <Grid container rowGap={3} direction="column" sx={{marginTop: '5rem'}}>
 
-            <Grid container justifyContent='center' alignItems='center'>
+            {/* <Grid item>
+                <Paper elevation={9}>
+
+                    <Box sx={{border: '1px solid red'}}>
+                        <img src='https://cdn.pixabay.com/photo/2016/03/21/20/05/image-1271454_1280.png' alt="entity" height={150} width={150}/>
+                    </Box>
+
+                    <Box sx={{border: '1px solid red'}}>
+
+                        name: {account.name}
+                        email: {account.email}
+                        category: {account.category}
+
+                    </Box>
+
+                </Paper>
+
+            </Grid> */}
+
+<Grid container justifyContent='center' alignItems='center'>
                 <Paper elevation={9} sx={{display: 'flex', width: '50%', justifyContent: 'center', alignItems: 'center', gap: '10px',  height: '40vh'}}>
 
                     <Box>
                         <img src='https://cdn.pixabay.com/photo/2016/03/21/20/05/image-1271454_1280.png' alt="entity" height={150} width={150}/>
                     </Box>
 
-                    <Box >
+                    <Box>
 
-                       <Typography variant="h5"> name: {name}</Typography>
-                       <Typography variant="h5"> email: {email} </Typography>
-                       <Typography variant="h5"> category: {category} </Typography>
+                       <Typography variant="h5"> name: {account.name}</Typography>
+                       <Typography variant="h5"> email: {account.email} </Typography>
+                       <Typography variant="h5"> category: {account.category} </Typography>
 
                     </Box>
 
@@ -101,21 +110,21 @@ const Profile = ()=>{
                 (assignments && assignments.length >0) ?
 
             
-            <Grid container rowGap={3} direction="column-reverse" sx={{border: '5px solid black'}} xs={12} >
+            <Grid container direction="column-reverse" sx={{border: '5px solid black'}} xs={12} >
                 {
 
                        assignments.map((e)=>(
                              
-                                <Card>
-                            <CardHeader title={(category === 'Teacher') ? e.title : `${e.student}/ ${e.shift}`} subheader={e.date}/>
+                                <Card >
+                            <CardHeader title={(account.category === 'Teacher') ? e.title : `${e.student}/ AssignmentId: ${e.assignmentId}`} subheader={e.date}/>
                         
                         <CardContent>
-                            {(category === 'Teacher') ? e.description : e.text}
+                            {(account.category === 'Teacher') ? e.description : e.text}
                         </CardContent>
 
 
                         {
-                            (category === 'Teacher')? (
+                            (account.category === 'Teacher')? (
                                 (e.image.length >0) ? (
                                     e.image.map((ele,index)=>(
                                         <Box sx={{
@@ -130,9 +139,10 @@ const Profile = ()=>{
 
                                         },
                                         transition: '0.4s',
+                                     
                                     
                                         }}>
-                                        <img src={ele} alt={`Image ${index + 1}`} style={{ width: '100%', height: 'auto' }} />
+                                        <img src={ele} alt={`Image ${index + 1}`} style={{ width: '50%', height: 'auto' }} />
                                         </Box>
                                     ))
                                 ):(<Box> </Box>)
@@ -151,6 +161,7 @@ const Profile = ()=>{
 
                                         },
                                         transition: '0.4s',
+                                       
                                     
                                         }}>
                                         <img src={ele} alt={`Image ${index + 1}`} style={{ width: '100%', height: 'auto' }} />
@@ -177,8 +188,6 @@ const Profile = ()=>{
             
             }
 
-          
-
 
         </Grid>
 
@@ -186,4 +195,4 @@ const Profile = ()=>{
     </>)
 }
 
-export  default Profile
+export  default AccountProfile

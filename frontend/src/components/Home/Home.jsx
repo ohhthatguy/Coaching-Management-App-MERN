@@ -54,31 +54,31 @@ const Home = ()=>{
         
     }
    
-    // useEffect(()=>{
-
-
-
-    // },[account._id])
-
-    const getListOfTeacherOrStudent = async()=>{
-        try{
-           console.log(account)
-                let response = await API.getStuTeachList({account: account})
-                if(!response.isSuccess){
-                    console.log("some error on frontend side in getting list")
-                }else{
-                    console.log("getting student  / teacher list is successfulll. DATA: ", response.data)
-                    setEntityList(response.data)
-                }
-
-            
-
-
-        }catch(err){
-            console.log("ERROR: ",err)
+    useEffect(()=>{
+        const getListOfTeacherOrStudent = async()=>{
+            try{
+               console.log(account)
+                    let response = await API.getStuTeachList({account: account})
+                    if(!response.isSuccess){
+                        console.log("some error on frontend side in getting list")
+                    }else{
+                        console.log("getting student  / teacher list is successfulll. DATA: ", response.data)
+                        setEntityList(response.data)
+                    }
+    
+                
+    
+    
+            }catch(err){
+                console.log("ERROR: ",err)
+            }
+    
         }
+        getListOfTeacherOrStudent()
 
-    }
+    },[account._id])
+
+   
 
     return (<>
     <Header />
@@ -87,7 +87,7 @@ const Home = ()=>{
             <Grid style={{border: "1px solid black"}} item lg={12} md={12} sd={12} xs={12}>
                 <Paper >
                     <Typography variant="h5"> hello {account.name} </Typography>
-                    <Button onClick={()=>getListOfTeacherOrStudent()}>CALL API TEST</Button>
+                    {/* <Button onClick={()=>getListOfTeacherOrStudent()}>CALL API TEST</Button> */}
                 </Paper>
             </Grid>
 
@@ -121,7 +121,7 @@ const Home = ()=>{
                             
                     
 
-                            <Grid item style={{border: "10px solid red", display: "flex", justifyContent: "space-around"}} xs={12} sm={10}>
+                            <Grid item style={{ display: "flex", justifyContent: "space-around"}} xs={12} sm={10}>
                               
                                 {
                                     (entityList )&& <EntityList entity={entityList} />
