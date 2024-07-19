@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import Header from "../Header/Header"
-import { Box, Grid, Paper } from "@mui/material"
+import { Box, CardHeader, Card, Grid, Paper, CardContent } from "@mui/material"
 import { useLocation } from "react-router-dom";
 import { API } from "../../services/Api";
 import { DataContext } from "../../context/DataProvider";
@@ -18,7 +18,10 @@ const Profile = ()=>{
     const category = queryParams.get('category');
 
     const [assignments, setAssignments] = useState()
+    const [images, setImages] = useState()
+
     console.log(assignments)
+   
 
     useEffect(()=>{
         
@@ -35,8 +38,11 @@ const Profile = ()=>{
                         if(!response.data){
                             console.log("there is no data returned by server")
                         }else{
-                            // console.log(response.data)
+                            console.log(response.data)
                             setAssignments([...response.data])
+                            
+                            
+
                         }
                 }else if(category === 'Student'){
                     //find submission done by student
@@ -87,12 +93,69 @@ const Profile = ()=>{
 
             </Grid>
 
-            <Grid item sx={{border: '3px solid black'}}>
-                {
-                    assignments && assignments.map((e)=>(
-                        <Box>
-                        {e._id}
-                    </Box>
+            <Grid item sx={{border: '5px solid black'}} xs={12} sm={10} >
+                { 
+               
+                        assignments && assignments.map((e)=>(
+                             
+                                <Card sx={{   border: '3px solid red'}}>
+                            <CardHeader title={(category === 'Teacher') ? e.title : e.shift} subheader={e.date}/>
+                        
+                        <CardContent>
+                            {(category === 'Teacher') ? e.description : e.text}
+                        </CardContent>
+
+
+                        {
+                            (category === 'Teacher')? (
+                                (e.image.length >0) ? (
+                                    e.image.map((ele,index)=>(
+                                        <Box sx={{
+                                            '&:hover': {
+                                            cursor: 'pointer',
+                                            transition: '0.4s',
+                                            transform: 'scale(1.01)'
+                                        },
+
+                                        '&:active':{
+                                            transform: 'scale(1.02)'
+
+                                        },
+                                        transition: '0.4s',
+                                    
+                                        }}>
+                                        <img src={ele} alt={`Image ${index + 1}`} style={{ width: '100%', height: 'auto' }} />
+                                        </Box>
+                                    ))
+                                ):(<Box> </Box>)
+                            ):(
+                                (e.files.length >0) ? (
+                                    e.files.map((ele,index)=>(
+                                        <Box sx={{
+                                            '&:hover': {
+                                            cursor: 'pointer',
+                                            transition: '0.4s',
+                                            transform: 'scale(1.01)'
+                                        },
+
+                                        '&:active':{
+                                            transform: 'scale(1.02)'
+
+                                        },
+                                        transition: '0.4s',
+                                    
+                                        }}>
+                                        <img src={ele} alt={`Image ${index + 1}`} style={{ width: '100%', height: 'auto' }} />
+                                        </Box>
+                                    ))
+                                ):(<Box> </Box>)
+                            )
+                        
+                        
+                        }
+
+
+                        </Card>
                     ))
                    
                 }
