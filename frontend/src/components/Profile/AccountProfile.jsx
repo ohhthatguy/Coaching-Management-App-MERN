@@ -66,7 +66,7 @@ const AccountProfile = ()=>{
     return (<>
 
     <Header />
-        <Grid container rowGap={3} direction="column" sx={{marginTop: '5rem'}}>
+        <Grid container rowGap={3} direction="column" sx={{marginTop: '5rem'}} >
 
             {/* <Grid item>
                 <Paper elevation={9}>
@@ -105,29 +105,29 @@ const AccountProfile = ()=>{
                 </Paper>
 
             </Grid>
+{
+    account.category === 'Teacher' ? <Typography variant="h5">Your assignments: </Typography> : <Typography variant="h5">Your submissions: </Typography>
+}
+            
 
             {
                 (assignments && assignments.length >0) ?
 
             
-            <Grid container direction="column-reverse" sx={{border: '5px solid black'}} xs={12} >
+            <Grid container direction="column-reverse" rowGap={4} sx={{border: '5px solid black'}} >
                 {
 
                        assignments.map((e)=>(
-                             
-                                <Card >
-                            <CardHeader title={(account.category === 'Teacher') ? e.title : `${e.student}/ AssignmentId: ${e.assignmentId}`} subheader={e.date}/>
                         
-                        <CardContent>
+                        <Grid item >
+                            <Card sx={{border: '2px solid red'}}>
+                            <CardHeader sx={{background: 'grey'}} title={(account.category === 'Teacher') ? e.title : `${e.student}/ AssignmentId: ${e.assignmentId}`} subheader={e.date}/>
+                        
+                        <CardContent sx={{background: 'grey'}}>
                             {(account.category === 'Teacher') ? e.description : e.text}
                         </CardContent>
 
-
-                        {
-                            (account.category === 'Teacher')? (
-                                (e.image.length >0) ? (
-                                    e.image.map((ele,index)=>(
-                                        <Box sx={{
+                        {/* sx={{
                                             '&:hover': {
                                             cursor: 'pointer',
                                             transition: '0.4s',
@@ -141,30 +141,23 @@ const AccountProfile = ()=>{
                                         transition: '0.4s',
                                      
                                     
-                                        }}>
-                                        <img src={ele} alt={`Image ${index + 1}`} style={{ width: '50%', height: 'auto' }} />
+                                        }} */}
+                        {
+                            (account.category === 'Teacher')? (
+                                (e.image.length >0) ? (
+                                    e.image.map((ele,index)=>(
+                                        <Box >
+                                          
+                                                <img src={ele} alt={`Image ${index + 1}`} style={{ objectFit: 'contain', width: '100%', height: '50vh' }} />
+                                           
                                         </Box>
                                     ))
                                 ):(<Box> </Box>)
                             ):(
                                 (e.files.length >0) ? (
                                     e.files.map((ele,index)=>(
-                                        <Box sx={{
-                                            '&:hover': {
-                                            cursor: 'pointer',
-                                            transition: '0.4s',
-                                            transform: 'scale(1.01)'
-                                        },
-
-                                        '&:active':{
-                                            transform: 'scale(1.02)'
-
-                                        },
-                                        transition: '0.4s',
-                                       
-                                    
-                                        }}>
-                                        <img src={ele} alt={`Image ${index + 1}`} style={{ width: '100%', height: 'auto' }} />
+                                        <Box>
+                                        <img src={ele} alt={`Image ${index + 1}`} style={{ objectFit: 'contain', width: '100%', height: '50vh' }} />
                                         </Box>
                                     ))
                                 ):(<Box> </Box>)
@@ -173,8 +166,9 @@ const AccountProfile = ()=>{
                         
                         }
 
-
+                       
                         </Card>
+                        </Grid>
                     ))
                    
                 }

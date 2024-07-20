@@ -98,27 +98,25 @@ const Profile = ()=>{
             </Grid>
 
             {
+    category === 'Teacher' ? <Typography variant="h5"> assignments: </Typography> : <Typography variant="h5"> submissions: </Typography>
+}
+
+            {
                 (assignments && assignments.length >0) ?
 
             
-            <Grid container rowGap={3} direction="column-reverse" sx={{border: '5px solid black'}} xs={12} >
+            <Grid container rowGap={4} direction="column-reverse" sx={{border: '5px solid black'}} xs={12} >
                 {
 
                        assignments.map((e)=>(
                              
-                                <Card>
-                            <CardHeader title={(category === 'Teacher') ? e.title : `${e.student}/ ${e.shift}`} subheader={e.date}/>
+                            <Card>
+                            <CardHeader sx={{background: 'grey'}} title={(category === 'Teacher') ? e.title : `${e.student}/ ${e.shift}`} subheader={e.date}/>
                         
-                        <CardContent>
+                        <CardContent sx={{background: 'grey'}}>
                             {(category === 'Teacher') ? e.description : e.text}
                         </CardContent>
-
-
-                        {
-                            (category === 'Teacher')? (
-                                (e.image.length >0) ? (
-                                    e.image.map((ele,index)=>(
-                                        <Box sx={{
+                        {/* sx={{
                                             '&:hover': {
                                             cursor: 'pointer',
                                             transition: '0.4s',
@@ -131,29 +129,22 @@ const Profile = ()=>{
                                         },
                                         transition: '0.4s',
                                     
-                                        }}>
-                                        <img src={ele} alt={`Image ${index + 1}`} style={{ width: '100%', height: 'auto' }} />
+                                        }} */}
+
+                        {
+                            (category === 'Teacher')? (
+                                (e.image.length >0) ? (
+                                    e.image.map((ele,index)=>(
+                                        <Box >
+                                        <img src={ele} alt={`Image ${index + 1}`} style={{ objectFit: 'contain', width: '100%', height: '50vh' }} />
                                         </Box>
                                     ))
                                 ):(<Box> </Box>)
                             ):(
                                 (e.files.length >0) ? (
                                     e.files.map((ele,index)=>(
-                                        <Box sx={{
-                                            '&:hover': {
-                                            cursor: 'pointer',
-                                            transition: '0.4s',
-                                            transform: 'scale(1.01)'
-                                        },
-
-                                        '&:active':{
-                                            transform: 'scale(1.02)'
-
-                                        },
-                                        transition: '0.4s',
-                                    
-                                        }}>
-                                        <img src={ele} alt={`Image ${index + 1}`} style={{ width: '100%', height: 'auto' }} />
+                                        <Box>
+                                        <img src={ele} alt={`Image ${index + 1}`} style={{ objectFit: 'contain', width: '100%', height: '50vh' }} />
                                         </Box>
                                     ))
                                 ):(<Box> </Box>)

@@ -21,7 +21,7 @@ const Image=({e,handleAssignmentCard})=>{
             <CardMedia
             onClick={()=> handleAssignmentCard(e)} 
 
-                 sx={{ height: 400, border: "1px solid blue", backgroundSize: 'cover', '&:hover':{
+                 sx={{ height: 400,objectFit: 'contain', border: "1px solid blue", backgroundSize: 'cover', '&:hover':{
                 backgroundColor: 'grey',
                 transition: '0.4s'
             },
@@ -45,7 +45,7 @@ const Image=({e,handleAssignmentCard})=>{
                  onClick={()=> handleAssignmentCard(e)} 
 
             
-                sx={{ height: 400, border: "1px solid blue", backgroundSize: 'cover',height: 400, border: "1px solid blue", backgroundSize: 'cover', '&:hover':{
+                sx={{ height: 400, objectFit: 'contain' ,border: "1px solid blue", backgroundSize: 'cover',height: 400, border: "1px solid blue", backgroundSize: 'cover', '&:hover':{
                     backgroundColor: 'grey',
                     transition: '0.4s'
                 },
